@@ -1,0 +1,28 @@
+upstreams:
+  - id: 1
+    nodes:
+      "fr:80": 1
+  - id: 2
+    nodes:
+      "en:80": 1
+routes:
+  - name: Check for French cookie
+    uri: /
+    vars: [[ "cookie_site", "==", "fr" ]]
+    upstream_id: 1
+  - name: Check for English cookie
+    uri: /
+    vars: [[ "cookie_site", "==", "en" ]]
+    upstream_id: 2
+  - name: Let the fate decide
+    uri: /
+    upstream_id: 1
+    priority: -1
+    plugins:
+      traffic-split:
+        rules:
+          - weighted_upstreams:
+              - upstream_id: 2
+                weight: 50
+              - weight: 50
+#END

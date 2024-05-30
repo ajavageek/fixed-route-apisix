@@ -1,0 +1,18 @@
+services:
+  apisix:
+    image: apache/apisix:3.9.1-debian
+    volumes:
+      - ./config.yml:/usr/local/apisix/conf/config.yaml:ro
+      - ./apisix.yml:/usr/local/apisix/conf/apisix.yaml:ro
+    ports:
+      - "9080:9080"
+  fr:
+    image: nginx:1.25-alpine
+    volumes:
+      - ./fr/index.html:/www/index.html:ro
+      - ./fr/nginx.conf:/etc/nginx/nginx.conf:ro
+  en:
+    image: nginx:1.25-alpine
+    volumes:
+      - ./en/index.html:/www/index.html:ro
+      - ./en/nginx.conf:/etc/nginx/nginx.conf:ro
